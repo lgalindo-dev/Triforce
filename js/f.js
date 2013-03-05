@@ -8,7 +8,8 @@ $(function() {
 	var ctx;
 	var dt = 0.1;
 	var puntoss = new Array();
-	var c__ = ['#ed9d33','#d44d61','#4f7af2','#ef9a1e','#269230','#36b641']; // colores para los puntos
+	//var c__ = ['#ed9d33','#d44d61','#4f7af2','#ef9a1e','#269230','#36b641']; // colores para los puntos
+	var c__ = ['#ed9d33']; 					// dejamos el color amarillo de la trifuerza original
 	
 	var pointCollection;
 	
