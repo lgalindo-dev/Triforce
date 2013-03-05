@@ -17,15 +17,6 @@ $(function() {
 		updateCanvasDimensions();
 		
 		var g = get_puntos_ss();
-		gLength = g.length;
-		for (var i = 0; i < gLength; i++) {
-			g[i].curPos.x = ((canvasWidth - 600) /2) + g[i].curPos.x;
-			g[i].curPos.y = ((canvasHeight - 600) /2) + g[i].curPos.y;
-			
-			g[i].originalPos.x = ((canvasWidth - 600) /2) + g[i].originalPos.x;
-			g[i].originalPos.y = ((canvasHeight - 600) /2) + g[i].originalPos.y;
-		};
-		
 		pointCollection = new PointCollection();
 		pointCollection.points = g;
 		initEventListeners();
@@ -106,11 +97,13 @@ $(function() {
 		this.addZ = function(z) {
 			this.z += z;
 		};
- 
 		this.set = function(x, y, z) {
 			this.x = x; 
 			this.y = y;
 			this.z = z;
+		};
+		this.tostring = function(){
+			return this.x.toString()+', '+this.y.toString()+', '+this.z.toString();
 		};
 	};
 	
@@ -220,15 +213,23 @@ $(function() {
 	
 	function get_puntos_ss(){
 		// calculamos los puntos
-		var width = 600;
-		var height = 600;
-		var ancho = 600;//width/2;
-		var alto = 600;//height/2;
-		var auxw = width - ancho;
-		var auxh = height - alto;
+		var puntos = new Array();
+		var width = canvasWidth;
+		var height = canvasHeight;
+		var margenid = width * .40;
+		var margenaa = height * .20;
+		var ancho = width - margenid;					// dejaremos un margen de izquiera 20% y derecha de 20 %
+		var alto = height - margenaa;						// dejamos un margen de arriba 10% y abajo 10%
+		var auxw = margenid/2;
+		var auxh = (margenaa/2);
 		// el triangulo mas grande.
-		var p1 = new Vector(auxw/2,auxh/2,0.0);
+		var p1 = new Vector(auxw,auxh,0.0);
+		//alert('w: '+width.toString()+' | h: '+height.toString()+'\naw: '+ancho.toString()+' | ah: '+alto.toString()+'\nid: '+auxw.toString()+' | aa: '+auxh);
 		var tp = triangulo(p1,ancho,alto);
+		for(var i = 0; i < tp.length; i++){
+			puntos.push(tp[i]);
+		}
+		tp.length = 0;
 		// calculamos el triangulo de adentro
 		var nancho = ancho / 2;
 		var nalto = alto /2;
@@ -236,11 +237,6 @@ $(function() {
 		auxw = auxw / 2;
 		var p = new Vector(auxw+p1.x,p1.y,0.0);
 		var tpp = triangulo(p,nancho,nalto,true);
-		var puntos = new Array();
-		for(var i = 0; i < tp.length; i++){
-			puntos.push(tp[i]);
-		}
-		tp.length = 0;
 		for(var i = 0; i < tpp.length; i++){
 			puntos.push(tpp[i]);
 		}
@@ -249,6 +245,7 @@ $(function() {
 	};
 	
 	function triangulo(p1,ancho,alto,isreversible){
+		// genera los puntos de un triangulo
 		isreversible = (isreversible == '' || isreversible == null || isreversible == undefined) ?  false : true;
 		var puntos = new Array();
 		var incremento = 15;
@@ -297,9 +294,7 @@ $(function() {
 	
 	function puntobien(valor){
 		// voltemos el valor de y para que se vea e el 3er cuadrante
-		var xt = 600;
-		var yt = 600;
-		var v = new Vector(valor.x,yt-valor.y,0.0);
+		var v = new Vector(valor.x,canvasHeight-valor.y,0.0);
 		return v;
 	};
 	
