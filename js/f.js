@@ -16,9 +16,6 @@ $(function() {
 	function init() {
 		updateCanvasDimensions();
 		
-		var g = get_puntos_ss();
-		pointCollection = new PointCollection();
-		pointCollection.points = g;
 		initEventListeners();
 		timeout();
 	};
@@ -41,6 +38,9 @@ $(function() {
 		canvas.attr({height: $(window).height(), width: $(window).width()});
 		canvasWidth = canvas.width();
 		canvasHeight = canvas.height();
+		
+		pointCollection = new PointCollection();
+		pointCollection.points = get_puntos_ss();
 
 		draw();
 	};
